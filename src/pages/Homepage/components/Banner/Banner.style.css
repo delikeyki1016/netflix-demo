@@ -1,0 +1,19 @@
+.banner {
+    height: 56vh;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.banner:before {
+    content: "";
+    background: linear-gradient(to top, #000, transparent);
+    position: absolute;
+    left: 0;
+    height: 56vh;
+    width: 100%;
+}
+.banner-text {
+    width: 70%;
+    margin: 20px;
+    z-index: 2;
+}
