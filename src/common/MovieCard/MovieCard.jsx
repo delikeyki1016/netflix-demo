@@ -2,7 +2,7 @@ import React from "react";
 import { Badge } from "react-bootstrap";
 import "./MovieCard.style.css";
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, index }) => {
     return (
         <div
             style={{
@@ -12,12 +12,15 @@ const MovieCard = ({ movie }) => {
                     ")",
             }}
             className="movie-card"
+            key={index}
         >
             <div className="overlay">
                 <h3 className="movie-title">{movie?.title}</h3>
-                {movie.genre_ids.map((id) => (
+                {movie.genre_ids.map((id, index) => (
                     <>
-                        <Badge bg="info">{id}</Badge>{" "}
+                        <Badge bg="info" key={index}>
+                            {id}
+                        </Badge>{" "}
                     </>
                 ))}
                 <div className="movie-info">

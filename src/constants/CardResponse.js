@@ -1,4 +1,6 @@
-const useResponsive = {
+// 고정된 값들은 constants 폴더를 생성해서 넣어둠
+
+export const cardResponsive = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
         items: 6,
@@ -15,5 +17,3 @@ const useResponsive = {
         slidesToSlide: 1, // optional, default to 1.
     },
 };
-
-export default useResponsive;
