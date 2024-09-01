@@ -15,7 +15,7 @@ const AppLayout = () => {
         <>
             <Navbar expand="lg" variant="dark">
                 <Container fluid>
-                    <Navbar.Brand href="#">
+                    <Navbar.Brand>
                         <img
                             src="/Netflix_Logo_RGB.png"
                             alt="Netflix"

@@ -1,0 +1,34 @@
+.movie-card {
+    width: 220px;
+    height: 330px;
+    background-size: cover;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    background-color: rgba(43, 41, 41, 0.9);
+    opacity: 0;
+    transition: all 0.3s;
+    overflow-wrap: break-word;
+}
+
+.overlay:hover {
+    opacity: 1;
+}
+
+.movie-card:hover {
+    transform: scale(1.2) translateZ(20px);
+    z-index: 2;
+}
+
+.movie-title {
+    font-size: 1.8rem;
+}
+
+.movie-info {
+    font-size: 12px;
+}
