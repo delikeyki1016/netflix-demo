@@ -2,6 +2,7 @@
     width: 220px;
     height: 330px;
     background-size: cover;
+    background-position: center center;
     cursor: pointer;
     transition: 0.2s;
 }
