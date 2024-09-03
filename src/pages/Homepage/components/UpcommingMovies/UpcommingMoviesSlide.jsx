@@ -1,6 +1,6 @@
 import React from "react";
 import { useUpcommingMoviesQuery } from "../../../../hooks/useUpcommingMovies";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 import MovieSlide from "../../../../common/MovieSlide/MovieSlide";
 
 const UpcommingMovieSlide = () => {
@@ -8,7 +8,7 @@ const UpcommingMovieSlide = () => {
     console.log("upcomming data", data);
 
     if (isLoading) {
-        return <h1>Loading...</h1>;
+        return <Spinner variant="danger" className="icon-spinner" />;
     }
     if (isError) {
         return <Alert variant="danger">{error.message}</Alert>;

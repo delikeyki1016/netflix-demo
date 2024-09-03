@@ -2,15 +2,16 @@ import React from "react";
 import { usePopularMoviesQuery } from "../../../../hooks/usePopularMovies";
 import Alert from "react-bootstrap/Alert";
 import "./Banner.style.css";
+import { Spinner } from "react-bootstrap";
 
 const Banner = () => {
     const { data, isLoading, isError, error } = usePopularMoviesQuery();
     console.log("배너쿼리 받아온 데이터", data);
     if (isLoading) {
-        <h1>Loading...</h1>;
+        return <Spinner variant="danger" className="icon-spinner" />;
     }
     if (isError) {
-        <Alert variant="danger">{error.message}</Alert>;
+        return <Alert variant="danger">{error.message}</Alert>;
     }
     return (
         <div

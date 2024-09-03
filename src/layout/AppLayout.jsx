@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -11,6 +11,15 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const AppLayout = () => {
     const navigate = useNavigate();
+
+    const [keyword, setKeyword] = useState("");
+
+    const searchByKeyword = (event) => {
+        event.preventDefault();
+        // url을 바꿔주기
+        navigate(`/movies/?q=${keyword}`);
+        setKeyword("");
+    };
     return (
         <>
             <Navbar expand="lg" variant="dark">
@@ -36,14 +45,22 @@ const AppLayout = () => {
                                 Movies
                             </Nav.Link>
                         </Nav>
-                        <Form className="d-flex" data-bs-theme="dark">
+                        <Form
+                            className="d-flex"
+                            data-bs-theme="dark"
+                            onSubmit={searchByKeyword}
+                        >
                             <Form.Control
                                 type="search"
                                 placeholder="Search"
                                 className="me-2"
                                 aria-label="Search"
+                                value={keyword}
+                                onChange={(event) =>
+                                    setKeyword(event.target.value)
+                                }
                             />
-                            <Button variant="outline-danger">
+                            <Button variant="outline-danger" type="submit">
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </Button>
                         </Form>

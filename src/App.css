@@ -9,3 +9,41 @@ body,
 .logo {
     width: 100px;
 }
+
+.icon-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+}
+
+.page-link {
+    background-color: #6c757d;
+    border-color: #5b636a;
+    color: lightgray;
+}
+
+.page-link:hover {
+    color: lightgray;
+    background-color: #5c636a;
+    border-color: transparent;
+}
+
+.page-item.active:focus {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.active > .page-link {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.active > .page-link:hover {
+    color: lightgray;
+}
+
+.page-item.disabled .page-link {
+    background-color: #5c636a;
+    border-color: transparent;
+}
