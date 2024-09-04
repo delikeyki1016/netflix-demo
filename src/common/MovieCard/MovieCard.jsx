@@ -2,11 +2,16 @@ import React from "react";
 import { Badge } from "react-bootstrap";
 import "./MovieCard.style.css";
 import { useMovieGenreQuery } from "../../hooks/useMovieGenre";
+import { useNavigate } from "react-router-dom";
 
 const MovieCard = ({ movie, index }) => {
     // data이름을 genreData라는 이름으로 재정의하겠다.
     const { data: genreData } = useMovieGenreQuery();
     // console.log("genreData", genreData);
+
+    console.log("movie card 프롭스", movie, index);
+
+    const navigate = useNavigate();
 
     // genreData안에서 해당 카드의 장르 id가 일치하는 것의 name을 리스트로 뽑아내기
     const showGenre = (genreIdList) => {
@@ -19,9 +24,9 @@ const MovieCard = ({ movie, index }) => {
         return genreNameList;
     };
 
-    // const truncate = (str, n) => {
-    //     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
-    //   };
+    const gotoMovieDetail = () => {
+        navigate(`/movies/${movie.id}`);
+    };
 
     return (
         <div
@@ -33,6 +38,7 @@ const MovieCard = ({ movie, index }) => {
             }}
             className="movie-card"
             key={index}
+            onClick={gotoMovieDetail}
         >
             <div className="overlay">
                 <h3
@@ -40,13 +46,12 @@ const MovieCard = ({ movie, index }) => {
                         movie?.title.length > 50 && `movie-title-overtext`
                     }`}
                 >
-                    {/* {console.log("글자수", movie.title.length)} */}
                     {movie?.title}
                 </h3>
                 {/*  movie.genre_ids를 함수를 한번 거친 후에 map 돌리기 */}
                 {showGenre(movie.genre_ids).map((genre, index) => (
                     <>
-                        <Badge bg="info" key={index}>
+                        <Badge bg="danger" key={index}>
                             {genre}
                         </Badge>{" "}
                     </>
@@ -59,7 +64,7 @@ const MovieCard = ({ movie, index }) => {
                         {movie?.adult ? (
                             <Badge bg="danger">{"18 +"}</Badge>
                         ) : (
-                            <Badge bg="success">{"18 -"}</Badge>
+                            <Badge bg="success">{"All"}</Badge>
                         )}
                     </div>
                 </div>

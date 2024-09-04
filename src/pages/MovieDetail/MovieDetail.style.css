@@ -1,0 +1,63 @@
+.poster-wrap {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.movie-poster {
+    border-radius: 6px;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+a:hover {
+    color: #dc3545;
+}
+
+.movie-detail-info {
+    margin: 20px 0 0 -12px;
+}
+
+.movie-detail-info li {
+    margin: 5px 0;
+}
+
+.graph-li {
+    max-width: 400px;
+    width: 100%;
+}
+
+.review-box {
+    margin: 0 0 10px 10px;
+    padding: 16px;
+    border: 1px solid #6a171f;
+    border-radius: 6px;
+}
+
+.review-text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.review-text-all {
+    display: block;
+}
+
+@media (max-width: 991px) {
+    .poster-wrap {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 580px) {
+    .movie-poster {
+        width: 98%;
+    }
+}
