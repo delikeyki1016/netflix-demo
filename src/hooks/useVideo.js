@@ -6,10 +6,10 @@ const fetchVideo = ({ id }) => {
 };
 
 export const useVideoQuery = ({ id }) => {
-    console.log("받아온 무비 디테일 id", id);
+    // console.log("받아온 무비 디테일 id", id);
     return useQuery({
         queryKey: ["movie-video", id],
         queryFn: () => fetchVideo({ id }),
-        select: (result) => result.data.results[0],
+        select: (result) => result.data.results.slice(0, 3),
     });
 };

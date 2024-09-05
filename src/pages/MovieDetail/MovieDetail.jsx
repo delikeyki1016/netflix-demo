@@ -32,6 +32,7 @@ const MovieDetail = () => {
     // console.log("받아온 장르", genreData);
 
     const [showModal, setShowModal] = useState(false);
+    const [selectedVideo, setSelectedVideo] = useState(null);
 
     const {
         data: movieReview,
@@ -41,8 +42,8 @@ const MovieDetail = () => {
     } = useMovieReviewQuery({ id });
     // console.log("리뷰", movieReview);
 
-    const { video } = useVideoQuery({ id });
-    console.log("video", video);
+    const { data: video } = useVideoQuery({ id });
+    console.log("video 리턴값", video);
 
     const [isMoreViewArray, setIsMoreViewArray] = useState(
         movieReview ? movieReview.map(() => false) : []
@@ -88,15 +89,15 @@ const MovieDetail = () => {
         return genreNameList;
     };
 
-    function showVideo(videoId) {
+    function showVideo() {
         const onPlayerReady = (event) => {
             // access to player in all event handlers via event.target
             event.target.pauseVideo();
         };
 
         const opts = {
-            height: "390",
-            width: "640",
+            height: "510",
+            width: "760",
             playerVars: {
                 // https://developers.google.com/youtube/player_parameters
                 autoplay: 1,
@@ -104,9 +105,18 @@ const MovieDetail = () => {
         };
 
         return (
-            <YouTube videoId={videoId} opts={opts} onReady={onPlayerReady} />
+            <YouTube
+                videoId={selectedVideo}
+                opts={opts}
+                onReady={onPlayerReady}
+            />
         );
     }
+
+    const handleModal = (item) => {
+        setSelectedVideo(item.key);
+        setShowModal(true);
+    };
 
     return (
         <Container className="p-3">
@@ -169,9 +179,17 @@ const MovieDetail = () => {
                         overview <br />
                         {data?.overview}
                         <br />
-                        <Button size="sm" onClick={() => setShowModal(true)}>
-                            video
-                        </Button>
+                        {video?.map((item, index) => (
+                            <>
+                                <Button
+                                    key={index}
+                                    size="sm"
+                                    onClick={() => handleModal(item)}
+                                >
+                                    video{index + 1}
+                                </Button>{" "}
+                            </>
+                        ))}
                     </p>
                     <Modal
                         show={showModal}
@@ -185,7 +203,7 @@ const MovieDetail = () => {
                         <Modal.Header closeButton>
                             <Modal.Title>Video</Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>{showVideo("Wt_0EKdTiE4")}</Modal.Body>
+                        <Modal.Body>{showVideo()}</Modal.Body>
                     </Modal>
                     <hr />
                     <div className="mt-3">
