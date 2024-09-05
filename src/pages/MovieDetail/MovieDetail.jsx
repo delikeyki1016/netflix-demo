@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMovieDetailQuery } from "../../hooks/useMovieDetail";
 import { useMovieGenreQuery } from "../../hooks/useMovieGenre";
@@ -7,10 +7,13 @@ import { Badge, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { Alert } from "bootstrap";
 import "./MovieDetail.style.css";
+// import { useDispatch, useSelector } from "react-redux";
 
 const MovieDetail = () => {
     const param = useParams();
     // console.log("무비디테일 param", param);
+
+    // const dispatch = useDispatch();
 
     const id = param.id;
     const { data, isLoading, isError, error } = useMovieDetailQuery({ id });
@@ -26,24 +29,30 @@ const MovieDetail = () => {
         isError: reviewIsError,
         error: reviewError,
     } = useMovieReviewQuery({ id });
-    console.log("리뷰", movieReview.results);
+    console.log("리뷰", movieReview);
 
     // 각 리뷰의 상태를 배열로 정의
-    const [isMoreViewArray, setIsMoreViewArray] = useState(
-        movieReview.results.map(() => false)
-    );
 
-    console.log(isMoreViewArray);
+    // const rivewList = () => {
+    //     dispatch({ type: "REVIEWLIST", payload: { movieReview } });
+    // };
 
-    const toggleReview = (index) => {
-        setIsMoreViewArray((prev) => {
-            // 이전 상태를 복사
-            const newState = [...prev];
-            // 해당 인덱스의 상태를 토글
-            newState[index] = !newState[index];
-            return newState;
-        });
-    };
+    // useEffect(() => {
+    //     rivewList();
+    // }, []);
+
+    // const rivewResult = useSelector((state) => state.reviewArray);
+    // console.log("리뷰 인덱스 배열 리턴", rivewResult);
+
+    // const toggleReview = (index) => {
+    //     rivewResult((prev) => {
+    //         // 이전 상태를 복사
+    //         const newState = [...prev];
+    //         // 해당 인덱스의 상태를 토글
+    //         newState[index] = !newState[index];
+    //         return newState;
+    //     });
+    // };
 
     if (isLoading) {
         return <Spinner variant="danger" className="icon-spinner" />;
@@ -152,15 +161,15 @@ const MovieDetail = () => {
                 </Col>
             </Row>
             <hr />
-            <Row>
+            {/* <Row>
                 <h2>Review</h2>
-                {movieReview.results.map((review, index) => (
+                {movieReview.map((review, index) => (
                     <div className="review-box" key={index}>
                         <strong>{review.author}</strong>
                         <br />
                         <div
                             className={`review-text ${
-                                isMoreViewArray[index] ? "review-text-all" : ""
+                                rivewResult[index] ? "review-text-all" : ""
                             }`}
                         >
                             {review.content}
@@ -171,14 +180,14 @@ const MovieDetail = () => {
                                 variant="secondary"
                                 onClick={() => toggleReview(index)}
                             >
-                                {isMoreViewArray[index] ? "hide" : "more"}
+                                {rivewResult[index] ? "hide" : "more"}
                             </Button>
                         ) : (
                             ""
                         )}
                     </div>
                 ))}
-            </Row>
+            </Row> */}
         </Container>
     );
 };

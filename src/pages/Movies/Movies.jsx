@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchMovieQuery } from "../../hooks/useSearchMovie";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -31,6 +31,11 @@ const Movies = () => {
     const [query, setQuery] = useSearchParams();
     console.log("query", query);
     const keyword = query.get("q");
+
+    useEffect(() => {
+        setPage(1);
+    }, [keyword]);
+
     const { data, isLoading, isError, error } = useSearchMovieQuery({
         keyword,
         page,
