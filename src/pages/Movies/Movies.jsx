@@ -68,36 +68,38 @@ const Movies = () => {
                 <Col lg={12}>
                     <Row>
                         {data && data.results.length > 0 ? (
-                            data.results.map((movie, index) => (
-                                <Col key={index} className="p-2">
-                                    <MovieCard movie={movie} />
-                                </Col>
-                            ))
+                            <>
+                                {data.results.map((movie, index) => (
+                                    <Col key={index} className="p-2">
+                                        <MovieCard movie={movie} />
+                                    </Col>
+                                ))}
+                                <div className="d-flex justify-content-center mt-4">
+                                    <ReactPaginate
+                                        breakLabel="..."
+                                        nextLabel=">"
+                                        onPageChange={handlePageClick}
+                                        pageRangeDisplayed={3}
+                                        pageCount={data?.total_pages} // 전체 페이지
+                                        previousLabel="<"
+                                        renderOnZeroPageCount={null}
+                                        forcePage={page - 1} // 현재 페이지
+                                        containerClassName="pagination"
+                                        activeClassName="active"
+                                        pageClassName="page-item"
+                                        pageLinkClassName="page-link"
+                                        previousClassName="page-item"
+                                        previousLinkClassName="page-link"
+                                        nextClassName="page-item"
+                                        nextLinkClassName="page-link"
+                                        variant="secondary"
+                                    />
+                                </div>
+                            </>
                         ) : (
                             <div className="text-center">no result</div>
                         )}
                     </Row>
-                    <div className="d-flex justify-content-center mt-4">
-                        <ReactPaginate
-                            breakLabel="..."
-                            nextLabel=">"
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={3}
-                            pageCount={data?.total_pages} // 전체 페이지
-                            previousLabel="<"
-                            renderOnZeroPageCount={null}
-                            forcePage={page - 1} // 현재 페이지
-                            containerClassName="pagination"
-                            activeClassName="active"
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            variant="secondary"
-                        />
-                    </div>
                 </Col>
             </Row>
         </div>
