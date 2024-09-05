@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import MovieCard from "../../common/MovieCard/MovieCard";
 import ReactPaginate from "react-paginate";
+import NoResult from "./NoResult";
 
 // 경로2가지
 // navbar에서 클릭해서 온 경우 ==> popular move 보여주기
@@ -97,7 +98,7 @@ const Movies = () => {
                                 </div>
                             </>
                         ) : (
-                            <div className="text-center">no result</div>
+                            <NoResult />
                         )}
                     </Row>
                 </Col>
