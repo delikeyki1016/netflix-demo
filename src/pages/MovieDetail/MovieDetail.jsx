@@ -7,6 +7,7 @@ import { Badge, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { Alert } from "bootstrap";
 import "./MovieDetail.style.css";
+import RecommandMovies from "../Movies/RecommandMovies";
 
 const MovieDetail = () => {
     const param = useParams();
@@ -75,14 +76,14 @@ const MovieDetail = () => {
     return (
         <Container className="p-3">
             <Row>
-                <Col lg={4} className="poster-wrap">
+                <Col lg={5} className="poster-wrap">
                     <img
                         src={`https://image.tmdb.org/t/p/w500${data?.poster_path}`}
                         alt={`${data?.title} poster`}
                         className="movie-poster"
                     />
                 </Col>
-                <Col lg={8}>
+                <Col lg={7}>
                     <h1>
                         {data?.title}
                         {` (${data?.release_date.substr(0, 4)})`}
@@ -193,6 +194,8 @@ const MovieDetail = () => {
                     </>
                 )}
             </Row>
+
+            <RecommandMovies id={id} />
         </Container>
     );
 };
