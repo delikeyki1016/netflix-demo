@@ -9,7 +9,7 @@ const MovieCard = ({ movie, index }) => {
     const { data: genreData } = useMovieGenreQuery();
     // console.log("genreData", genreData);
 
-    console.log("movie card 프롭스", movie, index);
+    // console.log("movie card 프롭스", movie, index);
 
     const navigate = useNavigate();
 

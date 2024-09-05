@@ -6,7 +6,7 @@ const fetchMovieReview = ({ id }) => {
 };
 
 export const useMovieReviewQuery = ({ id }) => {
-    console.log("받아온 무비 디테일 id", id);
+    // console.log("받아온 무비 디테일 id", id);
     return useQuery({
         queryKey: ["movie-review", id],
         queryFn: () => fetchMovieReview({ id }),

@@ -5,7 +5,7 @@ import { useRecommandMoviesQuery } from "../../hooks/useRecommandMovies";
 
 const RecommandMovies = ({ id }) => {
     const { data, isLoading, isError, error } = useRecommandMoviesQuery({ id });
-    console.log("recommand movie query data:", data);
+    // console.log("recommand movie query data:", data);
 
     if (isLoading) {
         return <Spinner variant="danger" className="icon-spinner" />;

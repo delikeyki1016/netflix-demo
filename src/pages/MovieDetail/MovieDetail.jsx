@@ -3,11 +3,21 @@ import { Link, useParams } from "react-router-dom";
 import { useMovieDetailQuery } from "../../hooks/useMovieDetail";
 import { useMovieGenreQuery } from "../../hooks/useMovieGenre";
 import { useMovieReviewQuery } from "../../hooks/useMovieReview";
-import { Badge, Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import {
+    Badge,
+    Button,
+    Col,
+    Container,
+    Modal,
+    Row,
+    Spinner,
+} from "react-bootstrap";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import { Alert } from "bootstrap";
 import "./MovieDetail.style.css";
 import RecommandMovies from "../Movies/RecommandMovies";
+import YouTube, { YouTubeProps } from "react-youtube";
+import { useVideoQuery } from "../../hooks/useVideo";
 
 const MovieDetail = () => {
     const param = useParams();
@@ -15,11 +25,13 @@ const MovieDetail = () => {
 
     const id = param.id;
     const { data, isLoading, isError, error } = useMovieDetailQuery({ id });
-    console.log("무비디테일 query data:", data);
+    // console.log("무비디테일 query data:", data);
 
     // data이름을 genreData라는 이름으로 재정의하겠다.
     const { data: genreData } = useMovieGenreQuery();
     // console.log("받아온 장르", genreData);
+
+    const [showModal, setShowModal] = useState(false);
 
     const {
         data: movieReview,
@@ -27,7 +39,10 @@ const MovieDetail = () => {
         isError: reviewIsError,
         error: reviewError,
     } = useMovieReviewQuery({ id });
-    console.log("리뷰", movieReview);
+    // console.log("리뷰", movieReview);
+
+    const { video } = useVideoQuery({ id });
+    console.log("video", video);
 
     const [isMoreViewArray, setIsMoreViewArray] = useState(
         movieReview ? movieReview.map(() => false) : []
@@ -63,7 +78,7 @@ const MovieDetail = () => {
 
     // genreData안에서 해당 카드의 장르 id가 일치하는 것의 name을 리스트로 뽑아내기
     const showGenre = (genreIdList) => {
-        console.log("genreIdList", genreIdList);
+        // console.log("genreIdList", genreIdList);
         if (!genreData) return [];
         const genreNameList = genreIdList.map((id) => {
             const genreObj = genreData.find((genre) => genre.id === id.id);
@@ -72,6 +87,26 @@ const MovieDetail = () => {
 
         return genreNameList;
     };
+
+    function showVideo(videoId) {
+        const onPlayerReady = (event) => {
+            // access to player in all event handlers via event.target
+            event.target.pauseVideo();
+        };
+
+        const opts = {
+            height: "390",
+            width: "640",
+            playerVars: {
+                // https://developers.google.com/youtube/player_parameters
+                autoplay: 1,
+            },
+        };
+
+        return (
+            <YouTube videoId={videoId} opts={opts} onReady={onPlayerReady} />
+        );
+    }
 
     return (
         <Container className="p-3">
@@ -133,7 +168,25 @@ const MovieDetail = () => {
                     <p className="mt-3">
                         overview <br />
                         {data?.overview}
+                        <br />
+                        <Button size="sm" onClick={() => setShowModal(true)}>
+                            video
+                        </Button>
                     </p>
+                    <Modal
+                        show={showModal}
+                        onHide={() => setShowModal(false)}
+                        backdrop="static"
+                        keyboard={false}
+                        size="lg"
+                        centered
+                        data-bs-theme="dark"
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Video</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>{showVideo("Wt_0EKdTiE4")}</Modal.Body>
+                    </Modal>
                     <hr />
                     <div className="mt-3">
                         backdrop
@@ -150,7 +203,11 @@ const MovieDetail = () => {
                                 made by
                                 <br />
                                 {data?.production_companies.map(
-                                    (com) => `${com.name} | `
+                                    (com, index) => (
+                                        <span
+                                            key={index}
+                                        >{`${com.name} | `}</span>
+                                    )
                                 )}
                             </>
                         )}
