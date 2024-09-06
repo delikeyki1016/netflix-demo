@@ -21,7 +21,7 @@ const AppLayout = () => {
         setKeyword("");
     };
     return (
-        <>
+        <div className="wrap">
             <Navbar expand="lg" variant="dark">
                 <Container fluid>
                     <Navbar.Brand>
@@ -69,7 +69,7 @@ const AppLayout = () => {
             </Navbar>
             {/* Outlet은 해당 라우트의 하위에 속한 라우트들을 보여주는 영역이다 */}
             <Outlet />
-        </>
+        </div>
     );
 };
 

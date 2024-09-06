@@ -16,7 +16,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import { Alert } from "bootstrap";
 import "./MovieDetail.style.css";
 import RecommandMovies from "../Movies/RecommandMovies";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
 import { useVideoQuery } from "../../hooks/useVideo";
 
 const MovieDetail = () => {
@@ -119,7 +119,7 @@ const MovieDetail = () => {
     };
 
     return (
-        <Container className="p-3">
+        <Container className="p-3 detail-wrap">
             <Row>
                 <Col lg={5} className="poster-wrap">
                     <img
@@ -155,6 +155,8 @@ const MovieDetail = () => {
                             <br />
                             <ProgressBar
                                 label={`${data?.vote_average.toFixed(2)}%`}
+                                now={`${data?.vote_average.toFixed(2)}`}
+                                max={10}
                             />
                         </li>
                         <li>release date: {data?.release_date}</li>

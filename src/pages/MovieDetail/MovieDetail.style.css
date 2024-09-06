@@ -1,3 +1,11 @@
+.detail-wrap {
+    color: #cbcaca;
+}
+
+h1,
+h2 {
+    color: #fff;
+}
 .poster-wrap {
     display: flex;
     justify-content: flex-end;
@@ -8,13 +16,13 @@
 }
 
 a {
-    color: #fff;
+    color: #cbcaca;
     text-decoration: none;
     word-break: break-all;
 }
 
 a:hover {
-    color: #dc3545;
+    color: #0d6efd;
 }
 
 .movie-detail-info {
