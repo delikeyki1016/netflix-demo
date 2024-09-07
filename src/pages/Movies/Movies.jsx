@@ -23,42 +23,29 @@ import { useMovieGenreQuery } from "../../hooks/useMovieGenre";
 // page 바뀔 때마다 useSearchMovie에 page까지 넣어서 fetch
 
 const Movies = () => {
-    const [currentData, setCurrentData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-    const [page, setPage] = useState(1);
-
-    const handlePageClick = ({ selected }) => {
-        console.log("page", selected);
-        setPage(selected + 1);
-    };
-
     const [query, setQuery] = useSearchParams();
-    console.log("query", query);
     const keyword = query.get("q");
 
-    useEffect(() => {
-        setPage(1);
-    }, [keyword]);
-
-    useEffect(() => {
-        setFilteredData([]);
-    }, []);
+    const [page, setPage] = useState(1);
+    const [filteredData, setFilteredData] = useState([]); // 필터드 데이터
 
     const { data, isLoading, isError, error } = useSearchMovieQuery({
         keyword,
         page,
-    });
-    console.log("search movie query data:", data);
+    }); // 초기 데이터
+
+    const { data: genreData } = useMovieGenreQuery();
 
     useEffect(() => {
-        if (data) {
-            setCurrentData(data);
-            console.log("currentData state", currentData);
+        if (data && data?.results) {
+            setFilteredData(data);
+            console.log("필터드데이타", filteredData);
         }
     }, [data]);
 
-    const { data: genreData } = useMovieGenreQuery();
-    console.log("장르데이타", genreData);
+    useEffect(() => {
+        setPage(1);
+    }, [keyword]);
 
     if (isLoading) {
         return <Spinner variant="danger" className="icon-spinner" />;
@@ -67,74 +54,41 @@ const Movies = () => {
         return <Alert variant="danger">{error.message}</Alert>;
     }
 
-    const fnSortHigh = () => {
-        if (currentData && currentData.results) {
-            const arraySortHigh = currentData?.results.sort(function (a, b) {
-                return b.popularity - a.popularity;
-            });
-            console.log("정렬내림차순", arraySortHigh);
-            setCurrentData({ ...currentData, results: arraySortHigh });
-        }
+    const handlePageClick = ({ selected }) => {
+        setPage(selected + 1);
     };
 
-    const fnSortLow = () => {
-        if (currentData && currentData.results) {
-            const arraySortLow = currentData?.results.sort(function (a, b) {
-                return a.popularity - b.popularity;
-            });
-            console.log("정렬오름차순", arraySortLow);
-            setCurrentData({ ...currentData, results: arraySortLow });
+    const handleSort = (key) => {
+        // console.log("키", key);
+        if (key === "desc") {
+            return setFilteredData(
+                [...data?.results].sort((a, b) => b.popularity - a.popularity)
+            );
+        } else if (key === "asc") {
+            return setFilteredData(
+                [...data?.results].sort((a, b) => a.popularity - b.popularity)
+            );
         }
-    };
-
-    const findGenre = (id) => {
-        setFilteredData([]);
-        if (!genreData || !currentData.results) return;
-        const filteredMovies = currentData.results.filter((movie) =>
-            movie.genre_ids.includes(id)
-        );
-
-        setFilteredData(filteredMovies);
-        console.log("필터드 리스트", filteredData);
     };
 
     return (
         <div className="p-3">
             <Row>
-                {currentData?.results?.length > 0 && (
+                {filteredData?.results?.length > 0 && (
                     <div className="box-dropdown">
                         <DropdownButton
                             id="dropdown-basic-button"
                             title="Sort"
                             size="sm"
                             variant="secondary"
+                            onSelect={handleSort}
                         >
-                            <Dropdown.Item onClick={fnSortHigh}>
+                            <Dropdown.Item eventKey="desc">
                                 Popularity high
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={fnSortLow}>
+                            <Dropdown.Item eventKey="asc">
                                 Popularity low
                             </Dropdown.Item>
-                        </DropdownButton>
-                        <DropdownButton
-                            id="dropdown-basic-button"
-                            title="Genre"
-                            size="sm"
-                            variant="secondary"
-                        >
-                            <Dropdown.Item
-                                onClick={() => window.location.reload()}
-                            >
-                                All
-                            </Dropdown.Item>
-                            {genreData?.map((genre, index) => (
-                                <Dropdown.Item
-                                    key={index}
-                                    onClick={() => findGenre(genre.id)}
-                                >
-                                    {genre.name}
-                                </Dropdown.Item>
-                            ))}
                         </DropdownButton>
                     </div>
                 )}
@@ -142,15 +96,9 @@ const Movies = () => {
             <Row>
                 <Col lg={12}>
                     <Row>
-                        {filteredData && filteredData.length > 0 ? (
-                            filteredData.map((movie, index) => (
-                                <Col key={index} className="p-2">
-                                    <MovieCard movie={movie} />
-                                </Col>
-                            ))
-                        ) : currentData?.results?.length > 0 ? (
+                        {filteredData?.results?.length > 0 ? (
                             <>
-                                {currentData.results.map((movie, index) => (
+                                {filteredData.results.map((movie, index) => (
                                     <Col key={index} className="p-2">
                                         <MovieCard movie={movie} />
                                     </Col>
@@ -161,10 +109,10 @@ const Movies = () => {
                                         nextLabel=">"
                                         onPageChange={handlePageClick}
                                         pageRangeDisplayed={3}
-                                        pageCount={currentData?.total_pages} // 전체 페이지
+                                        pageCount={data?.total_pages}
                                         previousLabel="<"
                                         renderOnZeroPageCount={null}
-                                        forcePage={page - 1} // 현재 페이지
+                                        forcePage={page - 1}
                                         containerClassName="pagination"
                                         activeClassName="active"
                                         pageClassName="page-item"
