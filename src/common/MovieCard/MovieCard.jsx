@@ -32,14 +32,15 @@ const MovieCard = ({ movie, index }) => {
         <div
             style={{
                 backgroundImage:
-                    "url(" +
-                    `https://image.tmdb.org/t/p/w300${movie?.poster_path}` +
-                    ")",
+                    movie?.poster_path !== null
+                        ? `url(https://image.tmdb.org/t/p/w300${movie.poster_path})`
+                        : `url(/noimage.png)`,
             }}
             className="movie-card"
             key={index}
             onClick={gotoMovieDetail}
         >
+            {/* {console.log("포스터", movie?.poster_path)} */}
             <div className="overlay">
                 <h3
                     className={`movie-title ${
