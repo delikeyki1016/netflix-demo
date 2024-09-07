@@ -27,7 +27,7 @@ const Movies = () => {
     const keyword = query.get("q");
 
     const [page, setPage] = useState(1);
-    const [filteredData, setFilteredData] = useState([]); // 필터드 데이터
+    const [filteredData, setFilteredData] = useState({}); // 필터드 데이터
 
     const { data, isLoading, isError, error } = useSearchMovieQuery({
         keyword,
@@ -37,7 +37,8 @@ const Movies = () => {
     const { data: genreData } = useMovieGenreQuery();
 
     useEffect(() => {
-        if (data && data?.results) {
+        if (data) {
+            console.log("초기데이터", data);
             setFilteredData(data);
             console.log("필터드데이타", filteredData);
         }
@@ -71,6 +72,17 @@ const Movies = () => {
         }
     };
 
+    const handleGenre = (id) => {
+        setFilteredData(data);
+        if (!genreData || !data.results) return;
+        const filteredMovies = data.results.filter((movie) =>
+            movie.genre_ids.includes(id)
+        );
+
+        setFilteredData(filteredMovies);
+        console.log("장르 필터드 리스트", filteredData);
+    };
+
     return (
         <div className="p-3">
             <Row>
@@ -89,6 +101,21 @@ const Movies = () => {
                             <Dropdown.Item eventKey="asc">
                                 Popularity low
                             </Dropdown.Item>
+                        </DropdownButton>
+
+                        <DropdownButton
+                            id="dropdown-basic-button"
+                            title="Genre"
+                            size="sm"
+                            variant="secondary"
+                            onSelect={handleGenre}
+                        >
+                            <Dropdown.Item eventKey={0}>All</Dropdown.Item>
+                            {genreData?.map((genre, index) => (
+                                <Dropdown.Item key={index} eventKey={genre.id}>
+                                    {genre.name}
+                                </Dropdown.Item>
+                            ))}
                         </DropdownButton>
                     </div>
                 )}
@@ -109,7 +136,7 @@ const Movies = () => {
                                         nextLabel=">"
                                         onPageChange={handlePageClick}
                                         pageRangeDisplayed={3}
-                                        pageCount={data?.total_pages}
+                                        pageCount={filteredData?.total_pages}
                                         previousLabel="<"
                                         renderOnZeroPageCount={null}
                                         forcePage={page - 1}
